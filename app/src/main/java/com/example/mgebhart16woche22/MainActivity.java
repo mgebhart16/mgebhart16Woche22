@@ -18,6 +18,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,9 +75,18 @@ public class MainActivity extends AppCompatActivity {
     {
         List<String> herstellerList = new ArrayList<>();
         for (Cars car : list) {
-            if(herstellerList.contains(car.getHersteller()))
             herstellerList.add(car.getHersteller());
         }
+        removeSameEntries(herstellerList);
+
+        ArrayAdapter<String> herstellerAdp = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, herstellerList);
+        spinner.setAdapter(herstellerAdp);
+    }
+    public void removeSameEntries(List<String> herstellerList)
+    {
+        HashSet<String> hashSet = new HashSet<String>(herstellerList);
+        herstellerList.clear();
+        herstellerList.addAll(hashSet);
 
         ArrayAdapter<String> herstellerAdp = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, herstellerList);
         spinner.setAdapter(herstellerAdp);
