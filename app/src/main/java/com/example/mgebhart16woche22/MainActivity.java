@@ -7,6 +7,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Spinner spinner;
     SearchView searchView;
     List<Cars> carList = new ArrayList<>();
+    List<Cars> searchList = new ArrayList<>();
     String fileName = "cars.csv";
 
     @Override
@@ -40,9 +42,32 @@ public class MainActivity extends AppCompatActivity {
 
         readCSV();
         readHersteller(carList);
+        searchList = carList;
 
         ArrayAdapter<Cars> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, carList);
         listView.setAdapter(adapter);
+
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                for (Cars items : carList) {
+                    if (!(items.toString().toUpperCase()).contains(newText.toUpperCase())) {
+                        searchList.remove(items);
+                        
+                    }else {
+                        Toast.makeText(MainActivity.this, "No Match found", Toast.LENGTH_LONG);
+                    }
+                }
+                return false;
+            }
+        });
     }
     public void readCSV()
     {
